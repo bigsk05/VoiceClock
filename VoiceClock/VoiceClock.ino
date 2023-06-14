@@ -1,13 +1,13 @@
 #include <NTPClient.h>
-#include <Ethernet.h>
-#include "EthernetUdp.h"
+#include <Ethernet2.h>
+#include "EthernetUdp2.h"
 #include "DFRobotDFPlayerMini.h"
 #include "SoftwareSerial.h"
 
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
-
+int sensorValue = 0;
 SoftwareSerial mySoftwareSerial(2, 3); // RX, TX
 EthernetUDP ntpUDP;
 DFRobotDFPlayerMini myDFPlayer;
@@ -32,19 +32,16 @@ void setup(){
   //----Set volume----
   myDFPlayer.volume(15);  //Set volume value (0~30).
 
-  Ethernet.begin(mac);
-
-  // Check for Ethernet hardware present
-  if (Ethernet.hardwareStatus() == EthernetNoHardware) {
-    Serial.println("Ethernet shield was not found.  Sorry, can't run without hardware. :(");
+  // start the Ethernet connection:
+  if (Ethernet.begin(mac) == 0) {
+    Serial.println("Failed to configure Ethernet using DHCP");
     while (true) {
-      delay(1); // do nothing, no point running without Ethernet hardware
+      delay(1); // do nothing
     }
   }
-  if (Ethernet.linkStatus() == LinkOFF) {
-    Serial.println("Ethernet cable is not connected.");
-  }
 
+  pinMode(5, OUTPUT);
+  
   timeClient.begin();
 }
 
@@ -136,7 +133,7 @@ void loop() {
       } else if (hour == "09") {
         myDFPlayer.playMp3Folder(930);
       } else if (hour == "10") {
-        myDFPlayer.playMp3Folder(1300);
+        myDFPlayer.playMp3Folder(1030);
       } else if (hour == "11") {
         myDFPlayer.playMp3Folder(1130);
       } else if (hour == "12") {
@@ -156,7 +153,7 @@ void loop() {
       } else if (hour == "19") {
         myDFPlayer.playMp3Folder(1930);
       } else if (hour == "20") {
-        myDFPlayer.playMp3Folder(2300);
+        myDFPlayer.playMp3Folder(2030);
       } else if (hour == "21") {
         myDFPlayer.playMp3Folder(2130);
       } else if (hour == "22") {
@@ -165,6 +162,14 @@ void loop() {
         myDFPlayer.playMp3Folder(2330);
       }
     }
+  }
+  
+  sensorValue = analogRead(A0);
+  Serial.println(sensorValue);
+  if (sensorValue < 500) {
+    digitalWrite(5, HIGH);
+  } else {
+    digitalWrite(5, LOW);
   }
   
   delay(500);
