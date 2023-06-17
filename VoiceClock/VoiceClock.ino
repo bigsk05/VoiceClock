@@ -12,6 +12,7 @@ SoftwareSerial mySoftwareSerial(2, 3); // RX, TX
 EthernetUDP ntpUDP;
 DFRobotDFPlayerMini myDFPlayer;
 unsigned long last = 0;
+unsigned long last_play = 0;
 
 NTPClient timeClient(ntpUDP, "ntp.ghink.net", 8*3600, 60000);
 
@@ -58,116 +59,166 @@ void loop() {
   String hour = now.substring(0, 2);
   String minute = now.substring(3, 5);
   String second = now.substring(6, 8);
-
-  if (second == "00") {
-    if (minute == "00") {
-      if (hour == "00") {
-        myDFPlayer.playMp3Folder(2400);
-      } else if (hour == "01") {
-        myDFPlayer.playMp3Folder(100);
-      } else if (hour == "02") {
-        myDFPlayer.playMp3Folder(200);
-      } else if (hour == "03") {
-        myDFPlayer.playMp3Folder(300);
-      } else if (hour == "04") {
-        myDFPlayer.playMp3Folder(400);
-      } else if (hour == "05") {
-        myDFPlayer.playMp3Folder(500);
-      } else if (hour == "06") {
-        myDFPlayer.playMp3Folder(600);
-      } else if (hour == "07") {
-        myDFPlayer.playMp3Folder(700);
-      } else if (hour == "08") {
-        myDFPlayer.playMp3Folder(800);
-      } else if (hour == "09") {
-        myDFPlayer.playMp3Folder(900);
-      } else if (hour == "10") {
-        myDFPlayer.playMp3Folder(1000);
-      } else if (hour == "11") {
-        myDFPlayer.playMp3Folder(1100);
-      } else if (hour == "12") {
-        myDFPlayer.playMp3Folder(1200);
-      } else if (hour == "13") {
-        myDFPlayer.playMp3Folder(1300);
-      } else if (hour == "14") {
-        myDFPlayer.playMp3Folder(1400);
-      } else if (hour == "15") {
-        myDFPlayer.playMp3Folder(1500);
-      } else if (hour == "16") {
-        myDFPlayer.playMp3Folder(1600);
-      } else if (hour == "17") {
-        myDFPlayer.playMp3Folder(1700);
-      } else if (hour == "18") {
-        myDFPlayer.playMp3Folder(1800);
-      } else if (hour == "19") {
-        myDFPlayer.playMp3Folder(1900);
-      } else if (hour == "20") {
-        myDFPlayer.playMp3Folder(2000);
-      } else if (hour == "21") {
-        myDFPlayer.playMp3Folder(2100);
-      } else if (hour == "22") {
-        myDFPlayer.playMp3Folder(2200);
-      } else if (hour == "23") {
-        myDFPlayer.playMp3Folder(2300);
-      }
-    } else if (minute == "30") {
-      if (hour == "00") {
-        myDFPlayer.playMp3Folder(2430);
-      } else if (hour == "01") {
-        myDFPlayer.playMp3Folder(130);
-      } else if (hour == "02") {
-        myDFPlayer.playMp3Folder(230);
-      } else if (hour == "03") {
-        myDFPlayer.playMp3Folder(330);
-      } else if (hour == "04") {
-        myDFPlayer.playMp3Folder(430);
-      } else if (hour == "05") {
-        myDFPlayer.playMp3Folder(530);
-      } else if (hour == "06") {
-        myDFPlayer.playMp3Folder(630);
-      } else if (hour == "07") {
-        myDFPlayer.playMp3Folder(730);
-      } else if (hour == "08") {
-        myDFPlayer.playMp3Folder(830);
-      } else if (hour == "09") {
-        myDFPlayer.playMp3Folder(930);
-      } else if (hour == "10") {
-        myDFPlayer.playMp3Folder(1030);
-      } else if (hour == "11") {
-        myDFPlayer.playMp3Folder(1130);
-      } else if (hour == "12") {
-        myDFPlayer.playMp3Folder(1230);
-      } else if (hour == "13") {
-        myDFPlayer.playMp3Folder(1330);
-      } else if (hour == "14") {
-        myDFPlayer.playMp3Folder(1430);
-      } else if (hour == "15") {
-        myDFPlayer.playMp3Folder(1530);
-      } else if (hour == "16") {
-        myDFPlayer.playMp3Folder(1630);
-      } else if (hour == "17") {
-        myDFPlayer.playMp3Folder(1730);
-      } else if (hour == "18") {
-        myDFPlayer.playMp3Folder(1830);
-      } else if (hour == "19") {
-        myDFPlayer.playMp3Folder(1930);
-      } else if (hour == "20") {
-        myDFPlayer.playMp3Folder(2030);
-      } else if (hour == "21") {
-        myDFPlayer.playMp3Folder(2130);
-      } else if (hour == "22") {
-        myDFPlayer.playMp3Folder(2230);
-      } else if (hour == "23") {
-        myDFPlayer.playMp3Folder(2330);
-      }
-    }
-  }
   
   sensorValue = analogRead(A0);
   if (sensorValue < 500) {
     digitalWrite(5, HIGH);
   } else {
     digitalWrite(5, LOW);
+  }
+
+  if ((millis() - last_play) > 1000) {
+    if (second == "00") {
+      if (minute == "00") {
+        if (hour == "00") {
+          myDFPlayer.playMp3Folder(2400);
+          last_play = millis();
+        } else if (hour == "01") {
+          myDFPlayer.playMp3Folder(100);
+          last_play = millis();
+        } else if (hour == "02") {
+          myDFPlayer.playMp3Folder(200);
+          last_play = millis();
+        } else if (hour == "03") {
+          myDFPlayer.playMp3Folder(300);
+          last_play = millis();
+        } else if (hour == "04") {
+          myDFPlayer.playMp3Folder(400);
+          last_play = millis();
+        } else if (hour == "05") {
+          myDFPlayer.playMp3Folder(500);
+          last_play = millis();
+        } else if (hour == "06") {
+          myDFPlayer.playMp3Folder(600);
+          last_play = millis();
+        } else if (hour == "07") {
+          myDFPlayer.playMp3Folder(700);
+          last_play = millis();
+        } else if (hour == "08") {
+          myDFPlayer.playMp3Folder(800);
+          last_play = millis();
+        } else if (hour == "09") {
+          myDFPlayer.playMp3Folder(900);
+          last_play = millis();
+        } else if (hour == "10") {
+          myDFPlayer.playMp3Folder(1000);
+          last_play = millis();
+        } else if (hour == "11") {
+          myDFPlayer.playMp3Folder(1100);
+          last_play = millis();
+        } else if (hour == "12") {
+          myDFPlayer.playMp3Folder(1200);
+          last_play = millis();
+        } else if (hour == "13") {
+          myDFPlayer.playMp3Folder(1300);
+          last_play = millis();
+        } else if (hour == "14") {
+          myDFPlayer.playMp3Folder(1400);
+          last_play = millis();
+        } else if (hour == "15") {
+          myDFPlayer.playMp3Folder(1500);
+          last_play = millis();
+        } else if (hour == "16") {
+          myDFPlayer.playMp3Folder(1600);
+          last_play = millis();
+        } else if (hour == "17") {
+          myDFPlayer.playMp3Folder(1700);
+          last_play = millis();
+        } else if (hour == "18") {
+          myDFPlayer.playMp3Folder(1800);
+          last_play = millis();
+        } else if (hour == "19") {
+          myDFPlayer.playMp3Folder(1900);
+          last_play = millis();
+        } else if (hour == "20") {
+          myDFPlayer.playMp3Folder(2000);
+          last_play = millis();
+        } else if (hour == "21") {
+          myDFPlayer.playMp3Folder(2100);
+          last_play = millis();
+        } else if (hour == "22") {
+          myDFPlayer.playMp3Folder(2200);
+          last_play = millis();
+        } else if (hour == "23") {
+          myDFPlayer.playMp3Folder(2300);
+          last_play = millis();
+        }
+      } else if (minute == "30") {
+        if (hour == "00") {
+          myDFPlayer.playMp3Folder(2430);
+          last_play = millis();
+        } else if (hour == "01") {
+          myDFPlayer.playMp3Folder(130);
+          last_play = millis();
+        } else if (hour == "02") {
+          myDFPlayer.playMp3Folder(230);
+          last_play = millis();
+        } else if (hour == "03") {
+          myDFPlayer.playMp3Folder(330);
+          last_play = millis();
+        } else if (hour == "04") {
+          myDFPlayer.playMp3Folder(430);
+          last_play = millis();
+        } else if (hour == "05") {
+          myDFPlayer.playMp3Folder(530);
+          last_play = millis();
+        } else if (hour == "06") {
+          myDFPlayer.playMp3Folder(630);
+          last_play = millis();
+        } else if (hour == "07") {
+          myDFPlayer.playMp3Folder(730);
+          last_play = millis();
+        } else if (hour == "08") {
+          myDFPlayer.playMp3Folder(830);
+          last_play = millis();
+        } else if (hour == "09") {
+          myDFPlayer.playMp3Folder(930);
+          last_play = millis();
+        } else if (hour == "10") {
+          myDFPlayer.playMp3Folder(1030);
+          last_play = millis();
+        } else if (hour == "11") {
+          myDFPlayer.playMp3Folder(1130);
+          last_play = millis();
+        } else if (hour == "12") {
+          myDFPlayer.playMp3Folder(1230);
+          last_play = millis();
+        } else if (hour == "13") {
+          myDFPlayer.playMp3Folder(1330);
+          last_play = millis();
+        } else if (hour == "14") {
+          myDFPlayer.playMp3Folder(1430);
+          last_play = millis();
+        } else if (hour == "15") {
+          myDFPlayer.playMp3Folder(1530);
+          last_play = millis();
+        } else if (hour == "16") {
+          myDFPlayer.playMp3Folder(1630);
+          last_play = millis();
+        } else if (hour == "17") {
+          myDFPlayer.playMp3Folder(1730);
+          last_play = millis();
+        } else if (hour == "18") {
+          myDFPlayer.playMp3Folder(1830);
+          last_play = millis();
+        } else if (hour == "19") {
+          myDFPlayer.playMp3Folder(1930);
+          last_play = millis();
+        } else if (hour == "20") {
+          myDFPlayer.playMp3Folder(2030);
+          last_play = millis();
+        } else if (hour == "21") {
+          myDFPlayer.playMp3Folder(2130);
+          last_play = millis();
+        } else if (hour == "22") {
+          myDFPlayer.playMp3Folder(2230);
+          last_play = millis();
+        } else if (hour == "23") {
+          myDFPlayer.playMp3Folder(2330);
+          last_play = millis();
+        }
+      }
+    }
   }
 
   if ((millis() - last) > 1000) {
