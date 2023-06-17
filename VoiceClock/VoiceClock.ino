@@ -11,7 +11,7 @@ int sensorValue = 0;
 SoftwareSerial mySoftwareSerial(2, 3); // RX, TX
 EthernetUDP ntpUDP;
 DFRobotDFPlayerMini myDFPlayer;
-int last = 0;
+unsigned long last = 0;
 
 NTPClient timeClient(ntpUDP, "ntp.ghink.net", 8*3600, 60000);
 
