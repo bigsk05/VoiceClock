@@ -11,6 +11,7 @@ int sensorValue = 0;
 SoftwareSerial mySoftwareSerial(2, 3); // RX, TX
 EthernetUDP ntpUDP;
 DFRobotDFPlayerMini myDFPlayer;
+int last = 0;
 
 NTPClient timeClient(ntpUDP, "ntp.ghink.net", 8*3600, 60000);
 
@@ -58,7 +59,6 @@ void loop() {
   String minute = now.substring(3, 5);
   String second = now.substring(6, 8);
 
-  Serial.println(now);
   if (second == "00") {
     if (minute == "00") {
       if (hour == "00") {
@@ -111,7 +111,6 @@ void loop() {
         myDFPlayer.playMp3Folder(2300);
       }
     } else if (minute == "30") {
-      Serial.println(now);
       if (hour == "00") {
         myDFPlayer.playMp3Folder(2430);
       } else if (hour == "01") {
@@ -165,14 +164,16 @@ void loop() {
   }
   
   sensorValue = analogRead(A0);
-  Serial.println(sensorValue);
   if (sensorValue < 500) {
     digitalWrite(5, HIGH);
   } else {
     digitalWrite(5, LOW);
   }
-  
-  delay(500);
+
+  if ((millis() - last) > 1000) {
+    Serial.println(now);
+    last = millis();
+  }
 }
 
 void printDetail(uint8_t type, int value){
