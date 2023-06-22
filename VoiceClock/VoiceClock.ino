@@ -14,7 +14,7 @@ DFRobotDFPlayerMini myDFPlayer;
 unsigned long last = 0;
 unsigned long last_play = 0;
 
-NTPClient timeClient(ntpUDP, "ntp.ghink.net", 8*3600, 60000);
+NTPClient timeClient(ntpUDP, "ntp.gh.ink", 8*3600, 60000);
 
 void setup(){
   Serial.begin(9600);
